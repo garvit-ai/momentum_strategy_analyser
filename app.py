@@ -1,5 +1,4 @@
 import streamlit as st
-import matplotlib as plt
 import pandas as pd
 from backend.data_processor import load_data
 from backend.jk_strategy import run_jk_strategy, calculate_monthly_returns
