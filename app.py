@@ -1,4 +1,5 @@
 import streamlit as st
+import matplotlib as plt
 import pandas as pd
 from backend.data_processor import load_data
 from backend.jk_strategy import run_jk_strategy, calculate_monthly_returns
@@ -12,7 +13,7 @@ st.title("J/K Momentum Strategy Analysis")
 
 @st.cache_data  # Cache to avoid reloading on every interaction
 def get_data():
-    file_path = r'C:\Users\garrv\Desktop\JK_Strategy\Nifty Dataset(monthly log returns) 2002-2024.xlsx'
+    file_path = r'dataset.xlsx'
     custom_start_date = pd.to_datetime("2002-01-01")
     custom_end_date = pd.to_datetime("2024-12-31")
     stock_df, nifty_df = load_data(
