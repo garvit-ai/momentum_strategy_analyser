@@ -62,10 +62,10 @@ if st.button("Analyse"):
             if summary_matrix:
                 summary_df = pd.DataFrame(summary_matrix, columns=[
                     'J', 'K', 'Avg Winner Return (%)', 'Avg Loser Return (%)', 'Spread (Winner - Loser) (%)'])
-
+                
                 # Sort the DataFrame by 'J' first, then by 'K'
                 summary_df = summary_df.sort_values(by=['J', 'K']).reset_index(drop=True)
-
+                
                 # Add S.No column with serial numbers starting from 1 after sorting
                 summary_df.insert(0, 'S.No', range(1, len(summary_df) + 1))
 
@@ -77,29 +77,28 @@ if st.button("Analyse"):
                     return ['background-color: #90EE90' if row.name == max_spread_idx else '' for _ in row]
 
                 st.subheader("Summary Matrix")
-                # Apply the styling and display the sorted DataFrame
-                st.dataframe(summary_df.style.apply(highlight_max_spread, axis=1),
-                            use_container_width=True, hide_index=True)
+                # Apply formatting to float columns and styling
+                styled_df = (summary_df.style
+                            .apply(highlight_max_spread, axis=1)
+                            .format({'Avg Winner Return (%)': '{:.4f}', 
+                                    'Avg Loser Return (%)': '{:.4f}', 
+                                    'Spread (Winner - Loser) (%)': '{:.4f}'}))
+
+                st.dataframe(styled_df, use_container_width=True, hide_index=True)
 
                 # Find J/K with maximum spread
                 best_J = summary_df.loc[max_spread_idx, 'J']
                 best_K = summary_df.loc[max_spread_idx, 'K']
 
                 # Compute and display plot for best J/K only
-                best_portfolios = run_jk_strategy(
-                    stock_df, best_J, best_K, pd.to_datetime("2024-12-31"))
+                best_portfolios = run_jk_strategy(stock_df, best_J, best_K, pd.to_datetime("2024-12-31"))
                 if best_portfolios:
-                    best_winner_df, best_loser_df = calculate_monthly_returns(
-                        stock_df, best_portfolios)
-                    best_final_df = pd.merge(
-                        best_winner_df, best_loser_df, on='Date')
+                    best_winner_df, best_loser_df = calculate_monthly_returns(stock_df, best_portfolios)
+                    best_final_df = pd.merge(best_winner_df, best_loser_df, on='Date')
 
-                    st.subheader(
-                        f"Cumulative Returns Plot: J={best_J}, K={best_K} vs NIFTY (Max Spread)")
-                    fig = plot_cumulative_returns_for_best_jk(
-                        best_final_df, nifty_df, best_J, best_K)
+                    st.subheader(f"Cumulative Returns Plot: J={best_J}, K={best_K} vs NIFTY (Max Spread)")
+                    fig = plot_cumulative_returns_for_best_jk(best_final_df, nifty_df, best_J, best_K)
                     st.pyplot(fig)
-
             else:
                 st.error("No valid results to display.")
     else:
