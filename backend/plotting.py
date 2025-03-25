@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+
 def plot_cumulative_returns_for_best_jk(final_df, nifty_df, J, K):
     final_df['Winner-Loser Spread'] = final_df['Winner Portfolio Avg Return'] - \
         final_df['Loser Portfolio Avg Return']

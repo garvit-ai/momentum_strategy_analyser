@@ -17,12 +17,11 @@ with st.sidebar:
     st.header("J/K Strategy Parameters")
 
     # File upload with tooltip instructions
-    # Add a help icon with a tooltip-like instruction using st.markdown
     st.markdown(
         """
         <div style="display: flex; align-items: center;">
             <span>Data File</span>
-            <span style="margin-left: 5px; cursor: pointer;" title="The stock returns sheet must have a 'Date' column and numeric return columns for stocks. The benchmark sheet (optional) must have 'Date' and 'Return decimal' columns.">
+            <span style="margin-left: 5px; cursor: pointer;" title="The stock returns sheet must have a 'Date' column (YYYY-MM-DD format) and numeric return columns for stocks. The benchmark sheet (optional) must have 'Date' (YYYY-MM-DD format) and 'Return decimal' columns.">
                 ℹ️
             </span>
         </div>
@@ -93,7 +92,7 @@ with st.sidebar:
         try:
             stock_df, nifty_df = load_data(file_data, stock_sheet_name, nifty_sheet_name, start_date, end_date)
             if uploaded_file is None and nifty_df is None:
-                st.warning("Default dataset does not contain 'nifty monthly returns' sheet. Graph will not be displayed.")
+                st.warning("Default dataset does not contain 'nifty monthly return' sheet. Graph will not be displayed.")
                 has_both_sheets = False
         except Exception as e:
             st.error(f"Error loading data: {str(e)}")
