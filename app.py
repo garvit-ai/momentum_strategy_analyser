@@ -42,7 +42,7 @@ with st.sidebar:
     # Handle file selection and validation
     if uploaded_file is None:
         st.info("No file uploaded. Using default dataset.")
-        dataset_path = os.path.join(os.path.dirname(__file__), '..', 'dataset', 'dataset.xlsx')
+        dataset_path = os.path.join(os.path.dirname(__file__), 'dataset', 'dataset.xlsx')
         if not os.path.exists(dataset_path):
             st.error(f"Default dataset not found at: {dataset_path}")
             st.stop()
